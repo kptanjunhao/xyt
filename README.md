@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #my project
 =======
 校园通iOSApp test
@@ -12,5 +11,4 @@
 8.查询总成绩（绩点分学分还有各门课成绩）
 9.查询当前所在地天气
 10.失物招领（未完成、可能会删减）
-
->>>>>>> 506cfa536ccc9340e6733dd1c735e7e72d9243f3
+![](https://github.com/kptanjunhao/xyt/blob/master/xyt.gif)
