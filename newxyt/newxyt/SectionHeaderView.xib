@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="SectionHeaderViewIdentifier" id="QCu-xj-gFX" customClass="SectionHeaderView" customModule="newxyt" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="287" height="40"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SxF-go-w4J">
+                    <rect key="frame" x="20" y="9" width="10" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="10" id="kc3-hl-UfZ"/>
+                    </constraints>
+                    <state key="normal" image="carat"/>
+                    <connections>
+                        <action selector="btnTap:" destination="QCu-xj-gFX" eventType="touchUpInside" id="OHR-Z5-dsS"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IEg-v7-bOs">
+                    <rect key="frame" x="40" y="9.5" width="207" height="20.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstItem="IEg-v7-bOs" firstAttribute="centerY" secondItem="QCu-xj-gFX" secondAttribute="centerY" id="8bz-lQ-6xo"/>
+                <constraint firstItem="SxF-go-w4J" firstAttribute="leading" secondItem="QCu-xj-gFX" secondAttribute="leading" constant="20" id="IrP-lh-HHJ"/>
+                <constraint firstAttribute="trailing" secondItem="IEg-v7-bOs" secondAttribute="trailing" constant="40" id="aRQ-GE-hb4"/>
+                <constraint firstItem="SxF-go-w4J" firstAttribute="centerY" secondItem="QCu-xj-gFX" secondAttribute="centerY" id="hiV-8v-X7u"/>
+                <constraint firstItem="IEg-v7-bOs" firstAttribute="leading" secondItem="SxF-go-w4J" secondAttribute="trailing" constant="10" id="tfR-8q-uip"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="BtnDisclosure" destination="SxF-go-w4J" id="Fj7-3G-E4A"/>
+                <outlet property="LblTitle" destination="IEg-v7-bOs" id="Fau-0R-3qs"/>
+            </connections>
+            <point key="canvasLocation" x="296.5" y="288"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="carat" width="11" height="11"/>
+    </resources>
+</document>
