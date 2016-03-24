@@ -19,6 +19,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
     var iconView:UIImageView!
     var intend:UIBarButtonSystemItem!
     var friendInfo = [String:AnyObject]()
+    var updateInfo = [String:AnyObject]()
     let ip = NSUserDefaults.standardUserDefaults().valueForKey("ip") as! String
     let userid = NSUserDefaults.standardUserDefaults().valueForKey("username")
     
@@ -63,7 +64,8 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         
         self.navigationItem.rightBarButtonItem = item
         let FriendInfo = data()
-        for attr in people.allattr{
+        let forattr = (people.userid != userid as! String) ? people.allattr : people.allowchangeattr
+        for attr in forattr{
             friendInfo[attr] = FriendInfo.objectForKey(attr)
         }
         
@@ -131,9 +133,9 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row != 0{
             let cell = tableView.dequeueReusableCellWithIdentifier("friendInfoCell", forIndexPath: indexPath) as! FriendInfoCell
-            let attr = people.allattr[indexPath.row]
-            cell.attrLabel.text = people.attrname[attr]
             if people.userid != userid as! String{
+                let attr = people.allattr[indexPath.row]
+                cell.attrLabel.text = people.attrname[attr]
                 let longtap = UILongPressGestureRecognizer(target: self, action: #selector(PeopleInfoDetailView.display(_:)))
                 longtap.minimumPressDuration = 0.5
                 cell.valueLabel.addGestureRecognizer(longtap)
@@ -144,6 +146,8 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
                     cell.valueLabel.text = ""
                 }
             }else{
+                let attr = people.allowchangeattr[indexPath.row]
+                cell.attrLabel.text = people.attrname[attr]
                 let tfframe = CGRectMake(cell.valueLabel.frame.origin.x, cell.valueLabel.frame.origin.y-5, self.view.frame.width/3*2, cell.valueLabel.frame.height+10)
                 let valuetf = UITextField(frame: tfframe)
                 valuetf.tag = indexPath.row
@@ -219,8 +223,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
     }
     
     func setnewvalue(textField: UITextField){
-        friendInfo[people.allattr[textField.tag]] = textField.text
-        print(friendInfo)
+        updateInfo[people.updatekey[textField.tag]] = textField.text
     }
     
     
@@ -260,28 +263,30 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
     func Done(){
         self.becomeFirstResponder()
         print(friendInfo)
-        print("进入资料修改提交")
+        updateinfo()
         updateicon(iconView.image!)
     }
     
     func updateicon(icon:UIImage){
-        let iconjpg = UIImageJPEGRepresentation(icon, 0.95)
-        print(iconjpg?.length)
+        let iconjpg = UIImageJPEGRepresentation(icon, 0.5)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)
         let url = NSURL(string: ip+"uploadface")!
         let request = NSMutableURLRequest(URL: url)
+        
         request.HTTPMethod = "POST"
+        request.addValue("multipart/form-data; boundary=AaB03x", forHTTPHeaderField: "Content-Type")
+        let data = NSMutableData()
+        data.appendData(NSString(string: "--AaB03x\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
+        data.appendData(NSString(string: "Content-Disposition: form-data; name=\"jpg\"; filename=\"\(userid!).jpg\"\r\n\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
+        data.appendData(iconjpg!)
+        data.appendData(NSString(string: "--AaB03x\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
+        data.appendData(NSString(string: "Content-Disposition: form-data; name=\"username\"; filename=\"username\"\r\n\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
+        data.appendData("\(userid!)".dataUsingEncoding(NSUTF8StringEncoding)!)
+        data.appendData(NSString(string: "\r\n--AaB03x--\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
         
-        let body = NSMutableData()
-        body.appendData(NSString(string: "username=\(userid!)").dataUsingEncoding(NSUTF8StringEncoding)!)
-//        body.appendData(NSString(string: "\r\n----------------------2121222222222222222222\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
-//        body.appendData(NSString(string: "Content-Disposition:form-data;name=\"jpg\";filename=\"1001\"\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
-//        body.appendData(NSString(string: "Content-Type;application/octet-stream\r\n\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
-        body.appendData(NSString(string: "jpg=\(iconjpg!)").dataUsingEncoding(NSUTF8StringEncoding)!)
-//        body.appendData(NSString(string: "\r\n----------------------2121222222222222222222\r\n").dataUsingEncoding(NSUTF8StringEncoding)!)
         
-        request.HTTPBody = body
+        request.HTTPBody = data
         
         let dataTask = session.dataTaskWithRequest(request, completionHandler: {
             (data, response, error) -> Void in
@@ -300,7 +305,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         }) as NSURLSessionTask
         dataTask.resume()//启动线程
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)//等待线程结束
-        let tip = UIAlertController(title: "提示", message: "", preferredStyle: .Alert)
+        let tip = UIAlertController(title: "提示", message: "更新头像成功", preferredStyle: .Alert)
         let OKAction = UIAlertAction(title: "好", style: .Default, handler: {
             (OK) -> Void in
             self.navigationController?.popViewControllerAnimated(true)
@@ -309,30 +314,22 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         presentViewController(tip, animated: true, completion: nil)
     }
     
-//    func updateicon(icon:UIImage){
-//        let manager = AFHTTPRequestOperationManager()
-//        let iconjpg = UIImageJPEGRepresentation(icon, 0.95)
-//        let para = [
-//            "username":userid!,
-//            "jpg":iconjpg!
-//        ]
-//        manager.POST(ip+"uploadface", parameters: para, success: { (AFHTTPRequestOperation, data) -> Void in
-//            print(data)
-//            }) { (AFHTTPRequestOperation, error) -> Void in
-//                print(error)
-//        }
-//
-//        
-//    }
+    func updateinfo(){
+        updateInfo["username"] = "\(userid!)"
+        var jsonstr = NSString()
+        do{
+            let json = try NSJSONSerialization.dataWithJSONObject(updateInfo, options: NSJSONWritingOptions.PrettyPrinted)
+            jsonstr = NSString(data: json, encoding: NSUTF8StringEncoding)!
+        }catch{}
+        let url = ip+"updateinfo?data="+(jsonstr.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))!
+        request(url)
+    }
     
     func request(url:String){
         var statu = 1
-//        let request = NSMutableURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:2.0)
         let request = NSMutableURLRequest(URL: NSURL(string:url)!)
-        request.HTTPMethod = "POST"
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)
-        print(request.HTTPMethod)
         let dataTask = session.dataTaskWithRequest(request, completionHandler: {
             (data, response, error) -> Void in
             if error != nil{
@@ -354,7 +351,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         let tip = UIAlertController(title: "提示", message: "", preferredStyle: .Alert)
         let OKAction = UIAlertAction(title: "好", style: .Default, handler: {
             (OK) -> Void in
-            self.navigationController?.popViewControllerAnimated(true)
+//            self.navigationController?.popViewControllerAnimated(true)
         })
         tip.addAction(OKAction)
         if statu == 0 {
@@ -395,7 +392,12 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         
         dataTask.resume()//启动线程
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)//等待线程结束
-        return datas!
+        if datas != nil{
+            return datas!
+        }
+        else{
+            return 0
+        }
     }
     
     override func canBecomeFirstResponder() -> Bool {
