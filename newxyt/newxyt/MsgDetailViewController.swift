@@ -33,7 +33,6 @@ class MsgDetailViewController: UIViewController, UITextFieldDelegate {
     var noticegroup = ""
     var contenttext:String?
     let userid = String(NSUserDefaults.standardUserDefaults().valueForKey("username")!)
-    let ip = String(NSUserDefaults.standardUserDefaults().valueForKey("ip")!)
     override func viewDidLoad() {
         super.viewDidLoad()
         let contentframe = CGRectMake(10, fromwho.frame.origin.y+8, self.view.frame.width-20, 390)
@@ -103,7 +102,7 @@ class MsgDetailViewController: UIViewController, UITextFieldDelegate {
         }
        
         
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
         let request = NSURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:5.0)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)
@@ -155,7 +154,7 @@ class MsgDetailViewController: UIViewController, UITextFieldDelegate {
         
         let action = isrec ? "recmsg?data=" : "sendmsg?data="
         var url = isrec ? "{\"noticeid\":\"\(noticeid)\"}" : "{\"noticeid\":\"\(noticeid)\",\"noticegroup\":\"\(noticegroup)\"}"
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
         let request = NSURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:10.0)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)

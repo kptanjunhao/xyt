@@ -12,7 +12,6 @@ import QuartzCore
 class AddFriendViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var inputstatu = "no"
     let screen = UIScreen.mainScreen().bounds
-    let ip = String(NSUserDefaults.standardUserDefaults().valueForKey("ip")!)
     let userid = String(NSUserDefaults.standardUserDefaults().valueForKey("username")!)
     let action = "fuzzyFind?data="
     var searchresult = [Int:AnyObject]()
@@ -26,7 +25,7 @@ class AddFriendViewController: UIViewController, UITableViewDelegate, UITableVie
     func loaddata(){
         self.searchresult.removeAll()
         var url = "{\"username\":\"\(nameTF.text!)\",\"userid\":\"\(userid)\"}"
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         let request = NSURLRequest(URL: NSURL(string: url)!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 2.0)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)

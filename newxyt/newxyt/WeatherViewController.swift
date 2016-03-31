@@ -186,6 +186,10 @@ class WeatherViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         print(error)
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = false
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

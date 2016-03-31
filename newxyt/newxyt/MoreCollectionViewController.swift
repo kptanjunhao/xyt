@@ -8,17 +8,16 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 class MoreCollectionViewController: UICollectionViewController, UIAlertViewDelegate, UITextFieldDelegate {
+    let reuseIdentifier = "Cell"
     //配置不同图标的segue
     let item = [
         ["name":"查询课表","pic":"course","action":"course"],
         ["name":"查询CET","pic":"glasses","action":"cet"],
         ["name":"查询绩点","pic":"pen","action":"score"],
+        ["name":"交易市场","pic":"trade","action":"trade"],
         ["name":"查看天气","pic":"umberalla","action":"weather"]
     ]
-    let ip = NSUserDefaults.standardUserDefaults().valueForKey("ip") as! String
     var json:AnyObject?
 
     override func viewDidLoad() {
@@ -39,11 +38,6 @@ class MoreCollectionViewController: UICollectionViewController, UIAlertViewDeleg
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBarHidden = true
-    }
-    
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.navigationController?.navigationBarHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,7 +70,7 @@ class MoreCollectionViewController: UICollectionViewController, UIAlertViewDeleg
         img.layer.shadowOffset = CGSize(width: 1, height: 1)
         img.layer.shadowRadius = 2
         
-        let label = UILabel(frame: CGRectMake(0,115,cell.bounds.size.width,20))
+        let label = UILabel(frame: CGRectMake(0,125,cell.bounds.size.width,20))
         label.textAlignment = NSTextAlignment.Center
         label.text = item[indexPath.item]["name"]
         let tap = UITapGestureRecognizer(target: self, action: #selector(MoreCollectionViewController.jumptofuncview(_:)))
@@ -143,6 +137,8 @@ class MoreCollectionViewController: UICollectionViewController, UIAlertViewDeleg
                 let loginAction = self.loginAction("getscore")
                 loginAlert.addAction(loginAction)
                 presentViewController(loginAlert, animated: true, completion: nil)
+            case "trade":
+                self.performSegueWithIdentifier(segue, sender: self)
             default:
                 print("当前segue："+segue)
             }
@@ -153,7 +149,7 @@ class MoreCollectionViewController: UICollectionViewController, UIAlertViewDeleg
     func getcet(id:String,name:String){
         do{
             var strUrl = "cet?data={\"id\":\"\(id)\",\"name\":\"\(name)\"}"
-            strUrl = ip + strUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+            strUrl = Config.ip + strUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let url = NSURL(string:strUrl)
             let data = try NSData(contentsOfURL:url!,options: NSDataReadingOptions())
             json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
@@ -225,7 +221,7 @@ class MoreCollectionViewController: UICollectionViewController, UIAlertViewDeleg
     func getscore(id:String,pwd:String){
         do{
             var strUrl = "score?data={\"username\":\"\(id)\",\"password\":\"\(pwd)\"}"
-            strUrl = ip + strUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+            strUrl = Config.ip + strUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let url = NSURL(string:strUrl)
             let data = try NSData(contentsOfURL:url!,options: NSDataReadingOptions())
             json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
@@ -251,7 +247,7 @@ class MoreCollectionViewController: UICollectionViewController, UIAlertViewDeleg
     func getcourse(id:String,pwd:String){
         do{
             var strUrl = "course?data={\"username\":\"\(id)\",\"password\":\"\(pwd)\"}"
-            strUrl = ip + strUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+            strUrl = Config.ip + strUrl.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
             let url = NSURL(string:strUrl)
             let data = try NSData(contentsOfURL:url!,options: NSDataReadingOptions())
             json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)

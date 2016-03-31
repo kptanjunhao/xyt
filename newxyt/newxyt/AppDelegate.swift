@@ -13,12 +13,9 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-//    var ip = "http://121.42.12.12:8080/xyt/"
-    var ip = "http://192.168.0.120:8080/xyt/"
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        NSUserDefaults.standardUserDefaults().setValue(ip, forKey: "ip")
         if let FirstOpen = NSUserDefaults.standardUserDefaults().valueForKey("FirstOpen"){
             if !(FirstOpen as! Bool){
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)

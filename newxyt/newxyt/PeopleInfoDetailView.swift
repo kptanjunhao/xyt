@@ -20,7 +20,6 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
     var intend:UIBarButtonSystemItem!
     var friendInfo = [String:AnyObject]()
     var updateInfo = [String:AnyObject]()
-    let ip = NSUserDefaults.standardUserDefaults().valueForKey("ip") as! String
     let userid = NSUserDefaults.standardUserDefaults().valueForKey("username")
     
     override func viewDidLoad() {
@@ -92,7 +91,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
                 let action = "leavemessage?data="
                 let friendid = String(self.friendInfo["userid"]!)
                 var url = "{\"from\":\"\(self.userid!)\",\"to\":\"\(friendid)\",\"text\":\"\(leavemsgAlert.textFields![0].text!)\"}"
-                url = self.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+                url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
                 self.request(url)
                 
                 
@@ -231,7 +230,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         let friendid = String(friendInfo["userid"]!)
         let action = "addFriend?data="
         var url = "{\"petitor\":\"\(userid!)\",\"receiver\":\"\(friendid)\"}"
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         let warning = UIAlertController(title: "提示", message: "将向对方发送好友邀请", preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "确定", style: .Cancel, handler: {
             (UIAlertAction) ->Void in
@@ -248,7 +247,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         let friendid = String(friendInfo["userid"]!)
         let action = "deletefriend?data="
         var url = "{\"username\":\"\(userid!)\",\"friend\":\"\(friendid)\"}"
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
         let warning = UIAlertController(title: "警告", message: "确认删除你的好友吗？", preferredStyle: .Alert)
         let okAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Destructive , handler: {
             (UIAlertAction) ->Void in
@@ -271,7 +270,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         let iconjpg = UIImageJPEGRepresentation(icon, 0.5)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)
-        let url = NSURL(string: ip+"uploadface")!
+        let url = NSURL(string: Config.ip+"uploadface")!
         let request = NSMutableURLRequest(URL: url)
         
         request.HTTPMethod = "POST"
@@ -305,13 +304,6 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         }) as NSURLSessionTask
         dataTask.resume()//启动线程
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)//等待线程结束
-        let tip = UIAlertController(title: "提示", message: "更新头像成功", preferredStyle: .Alert)
-        let OKAction = UIAlertAction(title: "好", style: .Default, handler: {
-            (OK) -> Void in
-            self.navigationController?.popViewControllerAnimated(true)
-        })
-        tip.addAction(OKAction)
-        presentViewController(tip, animated: true, completion: nil)
     }
     
     func updateinfo(){
@@ -321,7 +313,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
             let json = try NSJSONSerialization.dataWithJSONObject(updateInfo, options: NSJSONWritingOptions.PrettyPrinted)
             jsonstr = NSString(data: json, encoding: NSUTF8StringEncoding)!
         }catch{}
-        let url = ip+"updateinfo?data="+(jsonstr.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))!
+        let url = Config.ip+"updateinfo?data="+(jsonstr.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))!
         request(url)
     }
     
@@ -351,7 +343,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         let tip = UIAlertController(title: "提示", message: "", preferredStyle: .Alert)
         let OKAction = UIAlertAction(title: "好", style: .Default, handler: {
             (OK) -> Void in
-//            self.navigationController?.popViewControllerAnimated(true)
+            self.navigationController?.popViewControllerAnimated(true)
         })
         tip.addAction(OKAction)
         if statu == 0 {
@@ -372,7 +364,7 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
         var datas:AnyObject?
         var url = "{\"username\":\"\(username)\"}"
         
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
         let request = NSURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:10.0)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)
@@ -439,16 +431,5 @@ class PeopleInfoDetailView: UITableViewController, UITextFieldDelegate, UIImageP
             menu.setMenuVisible(true, animated: true)
         }
     }
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -11,7 +11,6 @@ import UIKit
 class LoginViewController: UIViewController, UITextFieldDelegate {
     //
     var userdefault = NSUserDefaults.standardUserDefaults()
-    var ip:String!
     var action = "login?data="
     //用户密码输入框
     var txtUser:UITextField!
@@ -34,8 +33,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var isshelted = false
     
     override func viewDidLoad() {
-        ip = userdefault.valueForKey("ip") as! String
-        
         super.viewDidLoad()
         let item = UIBarButtonItem(title: "注销", style: .Plain, target: self, action: nil)
         self.navigationItem.backBarButtonItem = item;
@@ -242,7 +239,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             UIView.animateWithDuration(0.5, animations: logining())
             //访问网络登录
             var url = "{\"username\":\"\(txtUser.text!)\",\"password\":\"\(txtPwd.text!)\"}"
-            url = self.ip + self.action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+            print(Config.ip)
+            url = Config.ip + self.action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
             var statu = ""
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 //花费时间的代码块
@@ -257,7 +255,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         do{
                             let json = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
                             statu = String(json.objectForKey("status")!)
-                        }catch{print("解析出错")}
+                        }catch{print("解析出错")
+                        print(error)}
                     }
                     dispatch_semaphore_signal(semaphore)
                     

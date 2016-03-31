@@ -9,7 +9,6 @@
 import UIKit
 
 class MessageBoardController: UITableViewController, UITextFieldDelegate {
-    let ip = NSUserDefaults.standardUserDefaults().valueForKey("ip") as! String
     var userid = ""
     var loginstatu = false
     var messages = NSMutableArray()
@@ -191,7 +190,7 @@ class MessageBoardController: UITableViewController, UITextFieldDelegate {
             }
             let personString = NSString(data: parasdata, encoding: NSUTF8StringEncoding)
             var url = "\(personString!)"
-            url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+            url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
             print(url)
             let request = NSMutableURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:5.0)
             request.HTTPMethod = "POST"
@@ -371,7 +370,7 @@ class MessageBoardController: UITableViewController, UITextFieldDelegate {
     func getMsg(){
         let action = "getmessagestome?data="
         var url = "{\"userid\":\"\(userid)\"}"
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             let request = NSURLRequest(URL: NSURL(string: url)!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 5.0)
             let session = NSURLSession.sharedSession()
@@ -410,15 +409,5 @@ class MessageBoardController: UITableViewController, UITextFieldDelegate {
         })
         
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

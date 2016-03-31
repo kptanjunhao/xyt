@@ -83,6 +83,11 @@ extension UIImageView {
     
 }
 
+public class Func {
+    
+}
+
+//第三方图片网络缓存
 class ZYHWebImageChcheCenter: NSObject {
     class func readCacheFromUrl(url:NSString)->NSData?{
         var data:NSData?

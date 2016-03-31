@@ -21,9 +21,6 @@ class RecentTap: UITapGestureRecognizer {
 }
 
 class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate, SectionHeaderViewDelegate {
-    let ip = String(NSUserDefaults.standardUserDefaults().valueForKey("ip")!)
-
-    
     var AddBtn: UIBarButtonItem!
     var editbtn: UIBarButtonItem!
     
@@ -346,7 +343,7 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
             namelbl.text = ((Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend).realname
             signlbl.text = ((Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend).signature
         }else{
-            iconurl = ip + "faces/" + (RecentFriends[RecentFriends.count-1-indexPath.row]["id"]! as! String) + ".jpg"
+            iconurl = Config.ip + "faces/" + (RecentFriends[RecentFriends.count-1-indexPath.row]["id"]! as! String) + ".jpg"
             let msgicon = UILabel(frame: CGRectMake(cell.frame.width,cell.center.y-10,40,40))
             msgicon.userInteractionEnabled = true
             msgicon.font = iconfont
@@ -471,7 +468,7 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
         let username = String(NSUserDefaults.standardUserDefaults().valueForKey("username")!)
         var url = "{\"username\":\"\(username)\"}"
         var datas = NSMutableArray()
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
         let request = NSURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:10.0)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)
@@ -500,7 +497,7 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
                             friend.setValuesForKeysWithDictionary(["realname":(friendlist[friendcount]!.objectForKey("realname")! as! String)])
                             friend.setValuesForKeysWithDictionary(["userid":(friendlist[friendcount]!.objectForKey("username")! as! String)])
                             friend.setValuesForKeysWithDictionary(["phone":(friendlist[friendcount]!.objectForKey("phone")! as! String)])
-                            let facepath = self.ip + "faces/" + (friendlist[friendcount]!.objectForKey("username")! as! String) + ".jpg"
+                            let facepath = Config.ip + "faces/" + (friendlist[friendcount]!.objectForKey("username")! as! String) + ".jpg"
                             friend.setValuesForKeysWithDictionary(["usericon":facepath])
                             if let signature = friendlist[friendcount]!.objectForKey("signature"){
                                 friend.setValuesForKeysWithDictionary(["signature":(signature as! String)])

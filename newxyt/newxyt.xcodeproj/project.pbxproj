@@ -13,6 +13,10 @@
 		27931FB91C916663000EF55D /* MessageBoardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27931FB81C916663000EF55D /* MessageBoardController.swift */; };
 		27931FBB1C918058000EF55D /* page5.png in Resources */ = {isa = PBXBuildFile; fileRef = 27931FBA1C918058000EF55D /* page5.png */; };
 		27931FC11C918468000EF55D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27931FC01C918468000EF55D /* Assets.xcassets */; };
+		27BF77361CA4D727003DBE36 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BF77351CA4D727003DBE36 /* Config.swift */; };
+		27BF774B1CA53BCC003DBE36 /* TradeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BF774A1CA53BCC003DBE36 /* TradeViewController.swift */; };
+		27EF0DFF1CA91469000323C2 /* Good.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF0DFE1CA91469000323C2 /* Good.swift */; };
+		27EF0E011CA92EA6000323C2 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF0E001CA92EA6000323C2 /* AddItemViewController.swift */; };
 		27F13E561C664D1100EBAA67 /* Func.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F13E551C664D1100EBAA67 /* Func.swift */; };
 		27F13E581C66507300EBAA67 /* MessageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F13E571C66507300EBAA67 /* MessageTableViewController.swift */; };
 		27F13E5A1C6650EB00EBAA67 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F13E591C6650EB00EBAA67 /* Message.swift */; };
@@ -56,7 +60,11 @@
 		27931FB81C916663000EF55D /* MessageBoardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBoardController.swift; sourceTree = "<group>"; };
 		27931FBA1C918058000EF55D /* page5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page5.png; sourceTree = "<group>"; };
 		27931FC01C918468000EF55D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		27BF77351CA4D727003DBE36 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		27BF774A1CA53BCC003DBE36 /* TradeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeViewController.swift; sourceTree = "<group>"; };
 		27DF5E0C1C60C6C60093577F /* xyt-bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "xyt-bridge.h"; sourceTree = "<group>"; };
+		27EF0DFE1CA91469000323C2 /* Good.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Good.swift; sourceTree = "<group>"; };
+		27EF0E001CA92EA6000323C2 /* AddItemViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		27F13E551C664D1100EBAA67 /* Func.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Func.swift; sourceTree = "<group>"; };
 		27F13E571C66507300EBAA67 /* MessageTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTableViewController.swift; sourceTree = "<group>"; };
 		27F13E591C6650EB00EBAA67 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -155,6 +163,7 @@
 				27DF5E0E1C60F5E00093577F /* iconfont */,
 				27F3E1A41C639CEE003D66C7 /* model */,
 				27F3CA231C5F999900101FA0 /* AppDelegate.swift */,
+				27BF77351CA4D727003DBE36 /* Config.swift */,
 				27F3CA251C5F999900101FA0 /* PageContentViewController.swift */,
 				27F3CA271C5F999900101FA0 /* Main.storyboard */,
 				27F6DBB61C82B9AB00C85AFA /* background */,
@@ -175,6 +184,7 @@
 				27F13E591C6650EB00EBAA67 /* Message.swift */,
 				27F3E1A61C639D18003D66C7 /* Friend.swift */,
 				27F3E1A51C639D18003D66C7 /* Group.swift */,
+				27EF0DFE1CA91469000323C2 /* Good.swift */,
 			);
 			name = model;
 			sourceTree = "<group>";
@@ -204,6 +214,8 @@
 				27F981431C608BA60035BF17 /* MoreLayout.swift */,
 				27F13E551C664D1100EBAA67 /* Func.swift */,
 				273A87E31C6E0ECF00C23F9F /* ScoreViewController.swift */,
+				27BF774A1CA53BCC003DBE36 /* TradeViewController.swift */,
+				27EF0E001CA92EA6000323C2 /* AddItemViewController.swift */,
 			);
 			name = MoreView;
 			sourceTree = "<group>";
@@ -370,10 +382,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27BF774B1CA53BCC003DBE36 /* TradeViewController.swift in Sources */,
 				2781E0821C66018600B96F56 /* CourseViewController.swift in Sources */,
 				273A87E41C6E0ECF00C23F9F /* ScoreViewController.swift in Sources */,
 				27F3E1A71C639D18003D66C7 /* Group.swift in Sources */,
 				27931FB91C916663000EF55D /* MessageBoardController.swift in Sources */,
+				27EF0E011CA92EA6000323C2 /* AddItemViewController.swift in Sources */,
 				27F3E19F1C61A945003D66C7 /* LoginViewController.swift in Sources */,
 				27F13E561C664D1100EBAA67 /* Func.swift in Sources */,
 				27F440FB1C647C8100607585 /* SectionHeaderView.swift in Sources */,
@@ -389,12 +403,14 @@
 				27F981441C608BA60035BF17 /* MoreLayout.swift in Sources */,
 				27F13E581C66507300EBAA67 /* MessageTableViewController.swift in Sources */,
 				27F3CA2C1C5F999900101FA0 /* newxyt.xcdatamodeld in Sources */,
+				27BF77361CA4D727003DBE36 /* Config.swift in Sources */,
 				27F6DBC01C82DF4100C85AFA /* MsgDetailViewController.swift in Sources */,
 				27F981401C607F5A0035BF17 /* TabBarController.swift in Sources */,
 				27F981481C60A7B70035BF17 /* WeatherViewController.swift in Sources */,
 				27F13E5A1C6650EB00EBAA67 /* Message.swift in Sources */,
 				27F3CA3B1C5FADDB00101FA0 /* PageViewController.swift in Sources */,
 				27F981461C6099100035BF17 /* MoreCollectionViewController.swift in Sources */,
+				27EF0DFF1CA91469000323C2 /* Good.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

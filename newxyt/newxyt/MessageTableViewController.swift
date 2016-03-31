@@ -58,12 +58,9 @@ class MessageTableViewController: UITableViewController {
     }
     
     func data() -> NSArray {
-        
-        
-        let ip = String(NSUserDefaults.standardUserDefaults().valueForKey("ip")!)
         let username = String(NSUserDefaults.standardUserDefaults().valueForKey("username")!)
         var url = "{\"username\":\"\(username)\"}"
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
         let request = NSURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:10.0)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)

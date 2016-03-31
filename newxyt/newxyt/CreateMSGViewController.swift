@@ -30,7 +30,6 @@ class CreateMSGLine: UIView {
 
 
 class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
-    let ip = String(NSUserDefaults.standardUserDefaults().valueForKey("ip")!)
     let username = String(NSUserDefaults.standardUserDefaults().valueForKey("username")!)
     
     var titletf:UITextField!
@@ -132,7 +131,7 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         let personString = NSString(data: parasdata, encoding: NSUTF8StringEncoding)
         var url = "\(personString!)"
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
         print(url)
         let request = NSMutableURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:5.0)
         request.HTTPMethod = "POST"
@@ -333,7 +332,7 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
         let action = "groups?data="
         var url = "{\"username\":\"\(username)\"}"
         var datas = NSMutableArray()
-        url = ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
+        url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
         let request = NSURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:10.0)
         let session = NSURLSession.sharedSession()
         let semaphore = dispatch_semaphore_create(0)

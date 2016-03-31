@@ -18,6 +18,4 @@ class Message: NSObject {
     var attrreccn = ["title":"标题","time":"时间","flag":"状态"]
     var attrdsend = ["title","noticeid","time","noticegroup"]
     var attrsendcn = ["title":"标题","time":"时间"]
-    //"title":"好友申请","noticeid":87,"time":"2015-12-29 16:12:39.0","flag":0
-    //{"title":"困难","noticeid":59,"time":"2015-12-16 09:21:49.0","noticegroup":"505052904"}
 }

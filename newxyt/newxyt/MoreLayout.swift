@@ -30,7 +30,7 @@ class MoreLayout: UICollectionViewLayout {
         
         let lineSpacing = 30
         
-        let CellSide:CGFloat = 150
+        let CellSide:CGFloat = 120
         
         let insets = UIEdgeInsets(top: 28, left: 26, bottom: 20, right: 26)
         
@@ -40,17 +40,10 @@ class MoreLayout: UICollectionViewLayout {
         
         let rightX = (collectionView?.bounds.size.width)! - CellSide - insets.right
         
-        switch(indexPath.item){
-            case 0:
-                attribute.frame = CGRectMake(insets.left, lineOriginY, CellSide, CellSide)
-            case 1:
-                attribute.frame = CGRectMake(rightX, lineOriginY, CellSide, CellSide)
-            case 2:
-                attribute.frame = CGRectMake(insets.left, lineOriginY, CellSide, CellSide)
-            case 3:
-                attribute.frame = CGRectMake(rightX, lineOriginY, CellSide, CellSide)
-            default:
-                break
+        if (indexPath.item % 2) != 0{
+            attribute.frame = CGRectMake(insets.left, lineOriginY, CellSide, CellSide)
+        }else{
+            attribute.frame = CGRectMake(rightX, lineOriginY, CellSide, CellSide)
         }
         
         return attribute
