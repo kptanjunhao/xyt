@@ -75,7 +75,7 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
         
         
         
-        selectView = UITableView(frame: CGRectMake(0,self.view.frame.height,self.view.frame.width,self.view.frame.height-88), style: UITableViewStyle.Plain)
+        selectView = UITableView(frame: CGRectMake(0,self.view.frame.height,self.view.frame.width,self.view.frame.height-200), style: UITableViewStyle.Plain)
         selectView.backgroundColor = UIColor.whiteColor()
         selectView.dataSource = self
         selectView.delegate = self
@@ -97,8 +97,9 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
         contenttv.delegate = self
         self.view.addSubview(contenttv)
         
-        self.view.addSubview(selectView)
+        
         self.view.addSubview(sendbtn)
+        self.view.addSubview(selectView)
         self.view.addSubview(finishtouch)
         groups = getContacts()
         
@@ -132,7 +133,6 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
         let personString = NSString(data: parasdata, encoding: NSUTF8StringEncoding)
         var url = "\(personString!)"
         url = Config.ip + action + url.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLPathAllowedCharacterSet())!
-        print(url)
         let request = NSMutableURLRequest(URL:NSURL(string:url)!,cachePolicy:NSURLRequestCachePolicy.ReloadIgnoringLocalAndRemoteCacheData,timeoutInterval:5.0)
         request.HTTPMethod = "POST"
         let session = NSURLSession.sharedSession()
@@ -214,7 +214,7 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
         let sectionView = sender.view!
         sectionopen[sectionView.tag] = !(sectionopen[sectionView.tag]!)
         var indexPaths = [NSIndexPath]()
-        for i in 0...(groups[sectionView.tag] as! Group).friends.count-1{
+        for i in 0..<(groups[sectionView.tag] as! Group).friends.count{
             let indexPath = NSIndexPath(forRow: i, inSection: sectionView.tag)
             indexPaths.append(indexPath)
         }
@@ -234,7 +234,7 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
             var i = 0
             for friend in (groups[section] as! Group).friends{
                 let indexPath = NSIndexPath(forRow: i, inSection: section)
-                let selectlbl = selectView.cellForRowAtIndexPath(indexPath)?.viewWithTag(18) as! UILabel
+                let selectlbl = selectView.cellForRowAtIndexPath(indexPath)!.viewWithTag(18) as! UILabel
                 if !(friend as! Friend).selected{
                     (friend as! Friend).selected = true
                     selectlbl.text = "已选择"
@@ -247,7 +247,7 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
             var i = 0
             for friend in (groups[section] as! Group).friends{
                 let indexPath = NSIndexPath(forRow: i, inSection: section)
-                let selectlbl = selectView.cellForRowAtIndexPath(indexPath)?.viewWithTag(18) as! UILabel
+                let selectlbl = selectView.cellForRowAtIndexPath(indexPath)!.viewWithTag(18) as! UILabel
                 if (friend as! Friend).selected{
                     (friend as! Friend).selected = false
                     selectlbl.text = ""
@@ -289,15 +289,16 @@ class CreateMSGViewController: UIViewController, UITableViewDelegate, UITableVie
         cell.selectionStyle = UITableViewCellSelectionStyle.None
         let selectedLabel = UILabel(frame: CGRectMake(cell.frame.width-20,0,45,30))
         selectedLabel.tag = 18
-        selectedLabel.text = (((groups[indexPath.section] as! Group).friends)[indexPath.row] as! Friend).selected ? "已选择" : ""
         selectedLabel.font = UIFont.systemFontOfSize(12)
+        selectedLabel.textColor = sectionopen[indexPath.section]! ? UIColor.blackColor() : UIColor.clearColor()
         cell.addSubview(selectedLabel)
         let namelbl = UILabel(frame: CGRectMake(15,0,100,30))
         namelbl.tag = 8
-        namelbl.textColor = UIColor.blackColor()
-        namelbl.backgroundColor = UIColor.redColor()
-        namelbl.text = (((groups[indexPath.section] as! Group).friends)[indexPath.row] as! Friend).realname
+        namelbl.textColor = sectionopen[indexPath.section]! ? UIColor.blackColor() : UIColor.clearColor()
         cell.addSubview(namelbl)
+        
+        selectedLabel.text = (((groups[indexPath.section] as! Group).friends)[indexPath.row] as! Friend).selected ? "已选择" : ""
+        namelbl.text = (((groups[indexPath.section] as! Group).friends)[indexPath.row] as! Friend).realname
         return cell
     }
     

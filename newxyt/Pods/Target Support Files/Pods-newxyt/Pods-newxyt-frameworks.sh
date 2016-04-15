@@ -86,14 +86,12 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-newxyt/AFNetworking.framework"
   install_framework "Pods-newxyt/BTNavigationDropdownMenu.framework"
-  install_framework "Pods-newxyt/FLKAutoLayout.framework"
-  install_framework "Pods-newxyt/ORStackView.framework"
-  install_framework "Pods-newxyt/SwiftyJSON.framework"
+  install_framework "Pods-newxyt/HappyDNS.framework"
+  install_framework "Pods-newxyt/Qiniu.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-newxyt/AFNetworking.framework"
   install_framework "Pods-newxyt/BTNavigationDropdownMenu.framework"
-  install_framework "Pods-newxyt/FLKAutoLayout.framework"
-  install_framework "Pods-newxyt/ORStackView.framework"
-  install_framework "Pods-newxyt/SwiftyJSON.framework"
+  install_framework "Pods-newxyt/HappyDNS.framework"
+  install_framework "Pods-newxyt/Qiniu.framework"
 fi

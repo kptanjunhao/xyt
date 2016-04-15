@@ -20,15 +20,42 @@ class RecentTap: UITapGestureRecognizer {
     var tag:Int!
 }
 
+class friendCell: UITableViewCell {
+    var namelbl: UILabel!
+    var signlbl: UILabel!
+    var iconView: UIImageView!
+    var nameLabelFrame = CGRectMake(70, 10, 100, 20)
+    var signLabelFrame = CGRectMake(70, 35, 200, 20)
+    var CellSeparate = UIEdgeInsets(top: 0, left: 70, bottom: 0, right: 0)
+    let iconcolor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 1)
+    
+    init(style: UITableViewCellStyle, reuseIdentifier: String?,iconurl:String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        namelbl = UILabel(frame: nameLabelFrame)
+        namelbl.font = UIFont.systemFontOfSize(18)
+        signlbl = UILabel(frame: signLabelFrame)
+        signlbl.font = UIFont.systemFontOfSize(14)
+        iconView = UIImageView()
+        self.addSubview(iconView)
+        self.separatorInset = CellSeparate
+        iconView.setZYHWebImage(iconurl, defaultImage: "people", isCache: true)
+        iconView.frame = CGRectMake(20, 10, 40, 40)
+        signlbl.textColor = UIColor.grayColor()
+        self.contentView.addSubview(signlbl)
+        self.contentView.addSubview(namelbl)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate, SectionHeaderViewDelegate {
     var AddBtn: UIBarButtonItem!
-    var editbtn: UIBarButtonItem!
     
     var refreshControl = UIRefreshControl()
     var ContactTableView: UITableView!
-    var RecentTableView: UITableView!
     var Contacts:NSArray!
-    var RecentFriends:NSMutableArray!
     var groupnamelist = [String]()
     var opensectionindex = NSNotFound
     var sectionInfoArray:NSMutableArray!
@@ -38,22 +65,17 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let tempfs = NSUserDefaults.standardUserDefaults().objectForKey("RecentFriends"){
-            RecentFriends = NSMutableArray(array: tempfs as! NSMutableArray)
-        }else{
-            RecentFriends = NSMutableArray(capacity: 10)
-        }
         var tableframe = self.view.frame
         tableframe.origin.x = tableframe.origin.x - 15
         tableframe.size.width = tableframe.width + 15
+        tableframe.size.height = tableframe.height - 64
         tableframe.origin.y = tableframe.origin.y
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        editbtn = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: #selector(ContactView.edit))
         AddBtn = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(ContactView.addFriend))
         self.navigationItem.rightBarButtonItems = [AddBtn]
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        let items = ["所有好友", "最近好友", "资料修改", "查看通知"]
+        let items = ["所有好友", "资料修改", "查看通知"]
         self.navigationController?.navigationBar.translucent = false
         UINavigationBar.appearance().translucent = false
         self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.0/255.0, green:180/255.0, blue:220/255.0, alpha: 1.0)
@@ -73,19 +95,13 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
             switch(indexPath){
             case 0:
                 self.navigationItem.rightBarButtonItems = [self.AddBtn]
-                self.changeTableView(true)
             case 1:
-                self.navigationItem.rightBarButtonItems = [self.editbtn]
-                self.RecentTableView.reloadData()
-                self.changeTableView(false)
-            case 2:
                 self.tochange = true
                 self.performSegueWithIdentifier("frienddetail", sender: self)
-            case 3:
+            case 2:
                 self.performSegueWithIdentifier("message", sender: self)
             default:
                 self.navigationItem.rightBarButtonItems = [self.AddBtn]
-                self.changeTableView(true)
             }
         }
         
@@ -97,16 +113,9 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
         ContactTableView.dataSource = self
         ContactTableView.separatorStyle = UITableViewCellSeparatorStyle.None
         ContactTableView.backgroundColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)
-        RecentTableView = UITableView(frame: tableframe, style: .Plain)
-        RecentTableView.delegate = self
-        RecentTableView.dataSource = self
-        RecentTableView.scrollsToTop = false
-        
-        RecentTableView.hidden = true
         
         Contacts = getContacts()
         self.view.addSubview(ContactTableView)
-        self.view.addSubview(RecentTableView)
         
         
 
@@ -169,45 +178,6 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
         }
     }
     
-    //设置最近好友
-    func setRF(friend:Friend){
-        let timeFormatter = NSDateFormatter()
-        timeFormatter.dateFormat = "yyyy年MM月dd日 HH:mm:ss"
-        let tempfriend = ["name":friend.realname,
-            "phone":friend.phone,
-            "id":friend.userid,
-            "time":"查看"+timeFormatter.stringFromDate(NSDate())
-        ]
-        if RecentFriends.count == 0{
-            RecentFriends.addObject(tempfriend)
-        }else{
-            var hasrepeat = false
-            for friendindex in 0...RecentFriends.count-1{
-                if ((RecentFriends[friendindex]["name"]) as! String) ==  tempfriend["name"]!{
-                    RecentFriends.removeObjectAtIndex(friendindex)
-                    RecentFriends.addObject(tempfriend)
-                    hasrepeat = true
-                    break
-                }
-            }
-            if !hasrepeat{
-                if RecentFriends.count <= 10{
-                    RecentFriends.addObject(tempfriend)
-                }else{
-                    RecentFriends.removeObjectAtIndex(0)
-                    RecentFriends.addObject(tempfriend)
-                }
-            }
-        }
-        NSUserDefaults.standardUserDefaults().setObject(RecentFriends, forKey: "RecentFriends")
-    }
-    
-    //最近好友表编辑状态
-    var editstatu = true
-    func edit(){
-        RecentTableView.editing = editstatu
-        editstatu = !editstatu
-    }
     
     //添加好友
     func addFriend(){
@@ -218,9 +188,6 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        if tableView == RecentTableView{
-            return 1
-        }
         return groupnamelist.count
     }
     
@@ -299,10 +266,6 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
     //返回当前分组的好友数
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        
-        if tableView == RecentTableView{
-            return RecentFriends.count
-        }
         let sectionInfo: SectionInfo = self.sectionInfoArray[section] as! SectionInfo
         let numStoriesInSection = (Contacts[section] as! Group).friends.count
         let sectionOpen = sectionInfo.headerView.HeaderOpen
@@ -323,56 +286,12 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     
     //MARK: 配置Cell
-    var nameLabelFrame = CGRectMake(70, 10, 100, 20)
-    var signLabelFrame = CGRectMake(70, 35, 200, 20)
-    var CellSeparate = UIEdgeInsets(top: 0, left: 70, bottom: 0, right: 0)
-    let iconfont = UIFont(name: "iconfont", size: 34)
-    let iconcolor = UIColor(red: 0, green: 128/255, blue: 1, alpha: 1)
+
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        let namelbl = UILabel(frame: nameLabelFrame)
-        namelbl.font = UIFont.systemFontOfSize(18)
-        let signlbl = UILabel(frame: signLabelFrame)
-        signlbl.font = UIFont.systemFontOfSize(14)
-        let iconView = UIImageView()
-        var iconurl = ""
-        cell.addSubview(iconView)
-        if tableView == ContactTableView{
-            iconurl = ((Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend).usericon
-            cell.separatorInset = CellSeparate
-            namelbl.text = ((Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend).realname
-            signlbl.text = ((Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend).signature
-        }else{
-            iconurl = Config.ip + "faces/" + (RecentFriends[RecentFriends.count-1-indexPath.row]["id"]! as! String) + ".jpg"
-            let msgicon = UILabel(frame: CGRectMake(cell.frame.width,cell.center.y-10,40,40))
-            msgicon.userInteractionEnabled = true
-            msgicon.font = iconfont
-            msgicon.textColor = iconcolor
-            let phoneicon = UILabel(frame: CGRectMake(cell.frame.width-48,cell.center.y-10,40,40))
-            phoneicon.userInteractionEnabled = true
-            phoneicon.font = iconfont
-            phoneicon.textColor = iconcolor
-            phoneicon.tag = indexPath.row
-            msgicon.tag = indexPath.row
-            phoneicon.text = "\u{e6d6}"
-            msgicon.text = "\u{e660}"
-            let calltap = RecentTap(target: self, action: #selector(ContactView.callphone(_:)))
-            calltap.tag = RecentFriends.count-1-indexPath.row
-            phoneicon.addGestureRecognizer(calltap)
-            let msgtap = RecentTap(target: self, action: #selector(ContactView.sendmsg(_:)))
-            msgtap.tag = RecentFriends.count-1-indexPath.row
-            msgicon.addGestureRecognizer(msgtap)
-            cell.contentView.addSubview(phoneicon)
-            cell.contentView.addSubview(msgicon)
-            cell.separatorInset = UIEdgeInsetsZero
-            namelbl.text = RecentFriends[RecentFriends.count-1-indexPath.row]["name"] as? String
-            signlbl.text = RecentFriends[RecentFriends.count-1-indexPath.row]["time"] as? String
-        }
-        iconView.setZYHWebImage(iconurl, defaultImage: "people", isCache: true)
-        iconView.frame = CGRectMake(20, 10, 40, 40)
-        signlbl.textColor = UIColor.grayColor()
-        cell.contentView.addSubview(signlbl)
-        cell.contentView.addSubview(namelbl)
+        let iconurl = ((Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend).usericon
+        let cell = friendCell(style: UITableViewCellStyle.Default, reuseIdentifier: "", iconurl: iconurl)
+        cell.namelbl.text = ((Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend).realname
+        cell.signlbl.text = ((Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend).signature
         return cell
     }
     
@@ -382,53 +301,10 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
         if tableView == ContactTableView{
             selectedfriend = (Contacts[indexPath.section] as! Group).friends[indexPath.row] as! Friend
             tableView.cellForRowAtIndexPath(indexPath)?.selected = false
-            setRF(selectedfriend)
             performSegueWithIdentifier("frienddetail", sender: self)
         }else{
             
         }
-    }
-    
-    //返回表格是否可以编辑
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        if tableView == RecentTableView{
-            return true
-        }else{
-            return false
-        }
-    }
-    //提交编辑结束时的动作
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete{
-            RecentFriends.removeObjectAtIndex(RecentFriends.count-1-indexPath.row)
-            NSUserDefaults.standardUserDefaults().setObject(RecentFriends, forKey: "RecentFriends")
-            RecentTableView.reloadData()
-        }
-    }
-    
-    func callphone(sender:RecentTap){
-        var callfriend:[String:String] = RecentFriends[sender.tag] as! [String : String]
-        let num = NSString(string: callfriend["phone"]!)
-        let phoneurl = NSURL(string: "tel:\(num)")
-        let timeFormatter = NSDateFormatter()
-        timeFormatter.dateFormat = "yyyy年MM月dd日 HH:mm:ss"
-        callfriend["time"] = "拨号" + timeFormatter.stringFromDate(NSDate())
-        RecentFriends[sender.tag] = callfriend
-        NSUserDefaults.standardUserDefaults().setObject(RecentFriends, forKey: "RecentFriends")
-        RecentTableView.reloadData()
-        UIApplication.sharedApplication().openURL(phoneurl!)
-    }
-    func sendmsg(sender:RecentTap){
-        var msgfriend:[String:String] = RecentFriends[sender.tag] as! [String : String]
-        let num = NSString(string: RecentFriends[sender.tag]["phone"] as! String)
-        let phoneurl = NSURL(string: "sms:\(num)")
-        let timeFormatter = NSDateFormatter()
-        timeFormatter.dateFormat = "yyyy年MM月dd日 HH:mm:ss"
-        msgfriend["time"] = "短信" + timeFormatter.stringFromDate(NSDate())
-        RecentFriends[sender.tag] = msgfriend
-        NSUserDefaults.standardUserDefaults().setObject(RecentFriends, forKey: "RecentFriends")
-        RecentTableView.reloadData()
-        UIApplication.sharedApplication().openURL(phoneurl!)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -520,11 +396,6 @@ class ContactView: UIViewController, UITableViewDataSource, UITableViewDelegate,
         dataTask.resume()//启动线程
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)//等待线程结束
         return datas
-    }
-    
-    func changeTableView(showContact:Bool){
-        ContactTableView.hidden = !showContact
-        RecentTableView.hidden = showContact
     }
     
 

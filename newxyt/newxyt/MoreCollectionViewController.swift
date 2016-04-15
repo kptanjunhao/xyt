@@ -15,7 +15,7 @@ class MoreCollectionViewController: UICollectionViewController, UIAlertViewDeleg
         ["name":"查询课表","pic":"course","action":"course"],
         ["name":"查询CET","pic":"glasses","action":"cet"],
         ["name":"查询绩点","pic":"pen","action":"score"],
-        ["name":"交易市场","pic":"trade","action":"trade"],
+        ["name":"校园市场","pic":"trade","action":"trade"],
         ["name":"查看天气","pic":"umberalla","action":"weather"]
     ]
     var json:AnyObject?

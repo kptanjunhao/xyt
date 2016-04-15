@@ -14,12 +14,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>FLKAutoLayout.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>ORStackView.xcscheme</key>
+		<key>HappyDNS.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -29,7 +24,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>SwiftyJSON.xcscheme</key>
+		<key>Qiniu.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import Qiniu
 
 
 class AddItemLine: UIView {
@@ -142,14 +143,13 @@ class AddItemViewController: UIViewController, UITextFieldDelegate {
         phImageRequestOption.synchronous = true
         for i in 0..<selectImages.count{
             var statu = false
-            for j in 0..<4{
+            for _ in 0..<4{
                 PHImageManager().requestImageForAsset(assetsFetchResults[selectImages[i]] as! PHAsset, targetSize: PHImageManagerMaximumSize, contentMode: PHImageContentMode.AspectFill, options: phImageRequestOption, resultHandler: { (image, info) in
                     if let _ = info!["PHImageErrorKey"]{
                         statu = false
                     }else{
                         selectPics[i] = image!
                         statu = true
-                        print("\(i):\(j):\(statu)")
                     }
                     
                 })
@@ -157,8 +157,29 @@ class AddItemViewController: UIViewController, UITextFieldDelegate {
             }
         }
         request(selectPics)
+//        qiniuRequest(selectPics)
         
         
+    }
+    
+    func qiniuRequest(selectPics:NSMutableArray){
+        var cancelSignal:Bool!
+        cancelSignal = false
+        let token = "U-xnzz4CMEqM8lSW1HisWIDflYDvIHlyWTCIigAm:1Ci-tEc5q6zyN80Jlc9x2kY9R6Q=:eyJzY29wZSI6ImNvbS1qbHN0dWRpbyIsImRlYWRsaW5lIjozMjM3ODMxMTEyfQ=="
+        let upManager = QNUploadManager()
+        var data = NSData()
+        for pic in selectPics{
+            data = UIImageJPEGRepresentation((pic as! UIImage),1)!
+            upManager.putData(data, key: nil, token: token, complete: { (info, key, resp) in
+                print(info)
+                print(resp)
+                }, option: QNUploadOption(mime: nil, progressHandler: { (key, percent) in
+                    
+                    }, params: nil, checkCrc: false, cancellationSignal: { () -> Bool in
+                        return cancelSignal
+                })
+            )
+        }
     }
     
     func request(selectPics:NSMutableArray){
@@ -249,7 +270,7 @@ class AddItemViewController: UIViewController, UITextFieldDelegate {
         option.sortDescriptors = [NSSortDescriptor.init(key: "creationDate", ascending: true)]
         assetsFetchResults = PHAsset.fetchAssetsWithOptions(option)
         selectPicView.contentSize = CGSizeMake(mainscreen.size.width, 125+CGFloat(assetsFetchResults.count/4)*91)
-        
+        //内存消耗太大，要改成重用，如果以后有时间会改。
         for i in 0..<assetsFetchResults.count {
             let imageView = UIImageView(frame: CGRectMake(11+CGFloat(i%4)*91, 11+CGFloat(i/4)*91, 80, 80))
             imageView.userInteractionEnabled = true

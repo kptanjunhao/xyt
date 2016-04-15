@@ -21,24 +21,22 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - BTNavigationDropdownMenu (0.2.1)
-  - FLKAutoLayout (0.2.1)
-  - ORStackView (3.0.1):
-    - FLKAutoLayout (~> 0.2)
-  - SwiftyJSON (2.3.2)
+  - HappyDNS (0.2.3)
+  - Qiniu (7.0.16):
+    - AFNetworking (~> 2.0)
+    - HappyDNS (~> 0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.6)
   - BTNavigationDropdownMenu
-  - ORStackView (~> 3.0)
-  - SwiftyJSON (~> 2.3)
+  - Qiniu (~> 7.0)
 
 SPEC CHECKSUMS:
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   BTNavigationDropdownMenu: 9cf4060162c96510ee27c388412e28678320cdc0
-  FLKAutoLayout: 9db6b30c2008d230da608e62c607b11c23b942e6
-  ORStackView: a1bb52748cd0ae29891c140baf22ff8972fb363c
-  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
+  HappyDNS: 6d85942e64c28b4fa61f8c76580398f52d6d1d11
+  Qiniu: 51a8702cddc02b50867e10cef99291b9a8a006b1
 
-PODFILE CHECKSUM: 8a123679db9fd6bd7b5e9bf3d6ca069656fe36c4
+PODFILE CHECKSUM: 14df191c2725b43e07a9c6048e79177417b5e7df
 
 COCOAPODS: 1.0.0.beta.3

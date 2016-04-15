@@ -19,6 +19,11 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>HappyDNS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>ORStackView.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -29,6 +34,11 @@
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>Qiniu.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
 		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -38,6 +48,16 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>21853BF68610109544F96BC5F4F39FF3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2A51E6689D38D58F7D00FAEF00EAC918</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2DB6C2CD7957113C2BEC554CE594753F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -53,6 +73,11 @@
 			<true/>
 		</dict>
 		<key>7A0527FB430CFEA86E88B13A74EBEFB6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9DEC1E8BD2D906F05BFF251011D39C1E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

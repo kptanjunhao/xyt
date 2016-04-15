@@ -12,5 +12,6 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import <CommonCrypto/CommonDigest.h>
+#import <Qiniu/QiniuSDK.h>
 
 #endif /* xyt_bridge_h */

@@ -9,6 +9,6 @@
 import Foundation
 
 public class Config {
-//    public static let ip = "http://121.42.12.12:8080/xyt/"
-    public static let ip = "http://192.168.0.120:8080/xyt/"
+    public static let ip = "http://121.42.12.12:8080/xyt/"
+//    public static let ip = "http://192.168.0.120:8080/xyt/"
 }
